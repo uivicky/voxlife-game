@@ -1,0 +1,2261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoxLife — Speak Your World Into Existence</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Outfit:wght@200;300;400;500;600;700&display=swap');
+
+  :root {
+    --ink: #0a0a0f;
+    --paper: #f4f0e8;
+    --gold: #c9a84c;
+    --gold-light: #e8c96a;
+    --rust: #c45c2e;
+    --teal: #1a7a6e;
+    --teal-light: #2ab5a5;
+    --mist: #e8e4dc;
+    --smoke: #2a2a35;
+    --neon: #00ffcc;
+    --shadow-ink: rgba(10,10,15,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Outfit', sans-serif;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 70% 40%, rgba(26,122,110,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 20% 70%, rgba(201,168,76,0.12) 0%, transparent 50%),
+      linear-gradient(165deg, #0a0a0f 0%, #111118 50%, #0d1a18 100%);
+  }
+
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(26,122,110,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26,122,110,0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .hero-left {
+    position: relative; z-index: 2;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    padding: 80px 60px 80px 80px;
+  }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--teal-light);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 6vw, 88px);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.35s forwards;
+  }
+
+  .hero-title span {
+    display: block;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--teal-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(16px, 1.8vw, 22px);
+    font-style: italic;
+    color: rgba(244,240,232,0.55);
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.5s forwards;
+  }
+
+  .hero-desc {
+    font-size: 15px;
+    color: rgba(244,240,232,0.7);
+    max-width: 460px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.65s forwards;
+  }
+
+  .hero-cta {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: linear-gradient(135deg, var(--teal) 0%, var(--teal-light) 100%);
+    color: white;
+    padding: 16px 32px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none; cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 8px 32px rgba(26,122,110,0.4);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(26,122,110,0.55);
+  }
+
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 10px;
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--gold);
+    padding: 16px 32px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    background: transparent;
+    transition: all 0.3s;
+  }
+
+  .btn-outline:hover {
+    background: rgba(201,168,76,0.08);
+    border-color: var(--gold);
+  }
+
+  .hero-right {
+    position: relative; z-index: 2;
+    display: flex; align-items: center; justify-content: center;
+    padding: 80px 80px 80px 40px;
+    opacity: 0;
+    animation: fadeIn 1.2s 0.9s forwards;
+  }
+
+  /* City Silhouette */
+  .city-scene {
+    width: 100%; max-width: 480px;
+    position: relative;
+  }
+
+  .city-svg { width: 100%; height: auto; }
+
+  .char-bubble {
+    position: absolute;
+    background: rgba(26,42,38,0.95);
+    border: 1px solid rgba(42,181,165,0.3);
+    border-radius: 16px 16px 16px 4px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--paper);
+    max-width: 200px;
+    backdrop-filter: blur(8px);
+    animation: floatBubble 3s ease-in-out infinite;
+  }
+
+  .char-bubble.b1 { top: 10%; left: -10%; animation-delay: 0s; }
+  .char-bubble.b2 { top: 35%; right: -5%; animation-delay: 1.5s; }
+  .char-bubble.b3 { bottom: 15%; left: 5%; animation-delay: 0.8s; }
+
+  .char-bubble .tone-bar {
+    display: flex; gap: 3px; margin-top: 8px;
+  }
+  .tone-pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+  }
+  .tone-confident { background: rgba(42,181,165,0.2); color: var(--teal-light); }
+  .tone-warm { background: rgba(201,168,76,0.2); color: var(--gold); }
+  .tone-nervous { background: rgba(196,92,46,0.2); color: #e07a52; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 80px;
+    background: rgba(10,10,15,0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(26,122,110,0.15);
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--paper);
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .logo-dot { color: var(--teal-light); }
+
+  .nav-links {
+    display: flex; gap: 40px; list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(244,240,232,0.55);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--teal-light); }
+
+  /* ── SECTION BASE ── */
+  section {
+    padding: 120px 80px;
+    position: relative;
+  }
+
+  .section-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .section-tag::before {
+    content: '';
+    display: inline-block;
+    width: 32px; height: 1px;
+    background: var(--gold);
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 4vw, 58px);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 24px;
+  }
+
+  .section-body {
+    font-size: 15px;
+    color: rgba(244,240,232,0.65);
+    max-width: 640px;
+    line-height: 1.8;
+  }
+
+  /* ── GAMEPLAY LOOP ── */
+  .gameplay-section {
+    background: linear-gradient(180deg, var(--ink) 0%, #0d1a18 100%);
+  }
+
+  .loop-diagram {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    margin: 80px 0 40px;
+    position: relative;
+  }
+
+  .loop-diagram::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 10%;
+    width: 80%; height: 2px;
+    background: linear-gradient(90deg, var(--teal), var(--gold), var(--rust), var(--teal));
+    transform: translateY(-50%);
+    z-index: 0;
+  }
+
+  .loop-node {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 16px;
+    padding: 0 16px;
+  }
+
+  .loop-icon {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    border: 2px solid;
+    background: var(--ink);
+    transition: transform 0.3s;
+  }
+
+  .loop-icon:hover { transform: scale(1.1); }
+
+  .loop-node:nth-child(1) .loop-icon { border-color: var(--teal-light); color: var(--teal-light); }
+  .loop-node:nth-child(2) .loop-icon { border-color: var(--gold); color: var(--gold); }
+  .loop-node:nth-child(3) .loop-icon { border-color: var(--rust); color: var(--rust); }
+  .loop-node:nth-child(4) .loop-icon { border-color: var(--teal); color: var(--teal); }
+  .loop-node:nth-child(5) .loop-icon { border-color: var(--gold-light); color: var(--gold-light); }
+
+  .loop-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 0.05em;
+  }
+
+  .loop-desc {
+    font-size: 11px;
+    color: rgba(244,240,232,0.45);
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  /* ── AI CHARACTERS ── */
+  .chars-section { background: #0a0a0f; }
+
+  .chars-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 64px;
+  }
+
+  .char-card {
+    background: rgba(20,20,28,0.8);
+    border: 1px solid rgba(244,240,232,0.06);
+    padding: 40px 32px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s;
+    cursor: default;
+  }
+
+  .char-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .char-card:hover::before { opacity: 1; }
+  .char-card:hover { border-color: rgba(244,240,232,0.15); transform: translateY(-4px); }
+
+  .char-card.recruiter::before { background: radial-gradient(ellipse at 0% 0%, rgba(26,122,110,0.1) 0%, transparent 60%); }
+  .char-card.mentor::before { background: radial-gradient(ellipse at 0% 0%, rgba(201,168,76,0.1) 0%, transparent 60%); }
+  .char-card.rival::before { background: radial-gradient(ellipse at 0% 0%, rgba(196,92,46,0.1) 0%, transparent 60%); }
+
+  .char-avatar {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px;
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .char-avatar::after {
+    content: '';
+    position: absolute; bottom: 0; right: 0;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--ink);
+  }
+
+  .recruiter .char-avatar { background: rgba(26,122,110,0.15); }
+  .recruiter .char-avatar::after { background: var(--teal-light); }
+  .mentor .char-avatar { background: rgba(201,168,76,0.15); }
+  .mentor .char-avatar::after { background: var(--gold); }
+  .rival .char-avatar { background: rgba(196,92,46,0.15); }
+  .rival .char-avatar::after { background: var(--rust); }
+
+  .char-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .char-role {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(244,240,232,0.4);
+    margin-bottom: 20px;
+  }
+
+  .char-trait-list {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .char-trait {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 13px;
+    color: rgba(244,240,232,0.65);
+    line-height: 1.4;
+  }
+
+  .char-trait::before {
+    content: '◆';
+    font-size: 7px;
+    margin-top: 4px;
+    flex-shrink: 0;
+  }
+
+  .recruiter .char-trait::before { color: var(--teal-light); }
+  .mentor .char-trait::before { color: var(--gold); }
+  .rival .char-trait::before { color: var(--rust); }
+
+  .memory-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.08em;
+    border: 1px solid;
+  }
+
+  .recruiter .memory-badge { border-color: rgba(42,181,165,0.3); color: var(--teal-light); }
+  .mentor .memory-badge { border-color: rgba(201,168,76,0.3); color: var(--gold); }
+  .rival .memory-badge { border-color: rgba(196,92,46,0.3); color: var(--rust); }
+
+  /* ── CONVERSATION FLOW ── */
+  .conv-section {
+    background: linear-gradient(180deg, #0d1a18 0%, var(--ink) 100%);
+  }
+
+  .conv-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 40px;
+    margin-top: 64px;
+    align-items: start;
+  }
+
+  .scenario-list {
+    display: flex; flex-direction: column; gap: 2px;
+  }
+
+  .scenario-btn {
+    background: rgba(20,20,28,0.6);
+    border: 1px solid rgba(244,240,232,0.06);
+    padding: 16px 20px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scenario-btn:hover, .scenario-btn.active {
+    background: rgba(26,122,110,0.12);
+    border-color: rgba(42,181,165,0.25);
+  }
+
+  .scenario-btn.active::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--teal-light);
+  }
+
+  .scenario-btn-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--paper);
+    margin-bottom: 4px;
+  }
+
+  .scenario-btn-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: rgba(244,240,232,0.35);
+    letter-spacing: 0.05em;
+  }
+
+  .conv-screen {
+    background: rgba(14,14,20,0.9);
+    border: 1px solid rgba(244,240,232,0.08);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .conv-header {
+    background: rgba(26,42,38,0.8);
+    padding: 16px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid rgba(42,181,165,0.15);
+  }
+
+  .conv-header-info { display: flex; align-items: center; gap: 12px; }
+  .conv-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; background: rgba(26,122,110,0.2); }
+  .conv-char-name { font-size: 14px; font-weight: 600; }
+  .conv-char-status { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--teal-light); letter-spacing: 0.05em; }
+
+  .conv-stakes {
+    display: flex; gap: 12px;
+  }
+
+  .stake-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 3px;
+    background: rgba(201,168,76,0.12);
+    border: 1px solid rgba(201,168,76,0.25);
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+
+  .conv-messages {
+    padding: 24px;
+    display: flex; flex-direction: column; gap: 16px;
+    min-height: 380px;
+    max-height: 380px;
+    overflow-y: auto;
+  }
+
+  .msg {
+    display: flex; gap: 12px;
+    animation: msgSlide 0.4s ease forwards;
+  }
+
+  .msg-ai { align-self: flex-start; }
+  .msg-player { align-self: flex-end; flex-direction: row-reverse; }
+
+  .msg-avt {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .msg-ai .msg-avt { background: rgba(26,122,110,0.2); }
+  .msg-player .msg-avt { background: rgba(201,168,76,0.15); }
+
+  .msg-bubble {
+    max-width: 72%;
+    padding: 12px 16px;
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .msg-ai .msg-bubble {
+    background: rgba(26,42,38,0.7);
+    border: 1px solid rgba(42,181,165,0.12);
+    border-radius: 4px 16px 16px 4px;
+  }
+
+  .msg-player .msg-bubble {
+    background: rgba(26,122,110,0.25);
+    border: 1px solid rgba(42,181,165,0.2);
+    border-radius: 16px 4px 4px 16px;
+    text-align: right;
+  }
+
+  .msg-meta {
+    display: flex; align-items: center; gap: 6px; margin-top: 6px;
+    flex-wrap: wrap;
+  }
+
+  .msg-player .msg-meta { justify-content: flex-end; }
+
+  .tone-chip {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+  }
+
+  .ai-reaction {
+    font-size: 11px;
+    color: rgba(244,240,232,0.4);
+    font-style: italic;
+  }
+
+  .consequence-banner {
+    margin: 0 24px 16px;
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 4px;
+    padding: 12px 16px;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12px;
+    color: var(--gold);
+  }
+
+  .consequence-banner .c-icon { font-size: 18px; }
+  .consequence-banner strong { color: var(--gold-light); }
+
+  .conv-input-area {
+    padding: 16px 24px;
+    border-top: 1px solid rgba(244,240,232,0.06);
+    display: flex; gap: 12px; align-items: center;
+  }
+
+  .mic-btn {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--teal) 0%, var(--teal-light) 100%);
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 4px 16px rgba(26,122,110,0.4);
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .mic-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 24px rgba(26,122,110,0.55);
+  }
+
+  .mic-btn.recording {
+    animation: pulse 1s ease infinite;
+    background: linear-gradient(135deg, var(--rust) 0%, #e07a52 100%);
+    box-shadow: 0 4px 20px rgba(196,92,46,0.5);
+  }
+
+  .waveform {
+    flex: 1;
+    height: 40px;
+    display: flex; align-items: center; gap: 3px;
+    padding: 0 8px;
+  }
+
+  .wave-bar {
+    flex: 1;
+    background: rgba(42,181,165,0.3);
+    border-radius: 2px;
+    height: 8px;
+    transition: height 0.1s;
+  }
+
+  .wave-bar.active {
+    animation: waveAnim var(--dur, 0.6s) ease-in-out infinite alternate;
+  }
+
+  .hint-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: rgba(244,240,232,0.3);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── PROGRESSION ── */
+  .progress-section { background: var(--ink); }
+
+  .progress-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    margin-top: 64px;
+    align-items: start;
+  }
+
+  .rep-meter {
+    background: rgba(14,14,20,0.8);
+    border: 1px solid rgba(244,240,232,0.07);
+    padding: 40px;
+    border-radius: 4px;
+  }
+
+  .rep-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(244,240,232,0.4);
+    margin-bottom: 32px;
+  }
+
+  .rep-stat {
+    margin-bottom: 28px;
+  }
+
+  .rep-stat-header {
+    display: flex; justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .rep-stat-name {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .rep-stat-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: rgba(244,240,232,0.6);
+  }
+
+  .rep-bar-track {
+    height: 6px;
+    background: rgba(244,240,232,0.07);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .rep-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 1s ease;
+  }
+
+  .fill-rep { background: linear-gradient(90deg, var(--teal) 0%, var(--teal-light) 100%); width: 78%; }
+  .fill-conf { background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%); width: 64%; }
+  .fill-impact { background: linear-gradient(90deg, var(--rust) 0%, #e08060 100%); width: 52%; }
+  .fill-vocab { background: linear-gradient(90deg, #7b68ee 0%, #a898f0 100%); width: 71%; }
+  .fill-fluency { background: linear-gradient(90deg, var(--teal-light) 0%, #80e0d4 100%); width: 85%; }
+
+  .career-track {
+    position: relative;
+    padding-left: 32px;
+  }
+
+  .career-track::before {
+    content: '';
+    position: absolute;
+    left: 8px; top: 8px; bottom: 8px;
+    width: 2px;
+    background: linear-gradient(180deg, var(--teal-light) 0%, var(--gold) 50%, var(--rust) 100%);
+  }
+
+  .career-node {
+    position: relative;
+    margin-bottom: 36px;
+    padding-left: 24px;
+  }
+
+  .career-node::before {
+    content: '';
+    position: absolute;
+    left: -24px; top: 8px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 2px solid;
+    background: var(--ink);
+    z-index: 1;
+  }
+
+  .career-node.done::before { border-color: var(--teal-light); background: var(--teal-light); }
+  .career-node.current::before { border-color: var(--gold); background: transparent; box-shadow: 0 0 0 3px rgba(201,168,76,0.2); }
+  .career-node.locked::before { border-color: rgba(244,240,232,0.15); background: transparent; }
+
+  .career-node-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .career-node.locked .career-node-title { color: rgba(244,240,232,0.3); }
+
+  .career-node-desc {
+    font-size: 12px;
+    color: rgba(244,240,232,0.45);
+    line-height: 1.5;
+  }
+
+  .career-node-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    margin-top: 6px;
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+
+  .badge-done { background: rgba(42,181,165,0.12); color: var(--teal-light); }
+  .badge-active { background: rgba(201,168,76,0.12); color: var(--gold); }
+  .badge-locked { background: rgba(244,240,232,0.04); color: rgba(244,240,232,0.25); }
+
+  /* ── ECONOMY ── */
+  .economy-section {
+    background: linear-gradient(180deg, var(--ink) 0%, #0a1210 100%);
+  }
+
+  .economy-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    margin-top: 64px;
+  }
+
+  .econ-card {
+    background: rgba(16,16,24,0.9);
+    border: 1px solid rgba(244,240,232,0.06);
+    padding: 32px 24px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+
+  .econ-card:hover {
+    background: rgba(20,20,30,0.95);
+    border-color: rgba(244,240,232,0.12);
+    transform: translateY(-3px);
+  }
+
+  .econ-icon { font-size: 32px; margin-bottom: 20px; display: block; }
+  .econ-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(244,240,232,0.45);
+    margin-bottom: 12px;
+  }
+
+  .econ-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .econ-desc {
+    font-size: 12px;
+    color: rgba(244,240,232,0.5);
+    line-height: 1.6;
+  }
+
+  .econ-example {
+    margin-top: 16px;
+    padding: 10px 12px;
+    background: rgba(244,240,232,0.03);
+    border-left: 2px solid;
+    font-size: 11px;
+    color: rgba(244,240,232,0.4);
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  .econ-card:nth-child(1) { border-top: 2px solid var(--teal-light); }
+  .econ-card:nth-child(1) .econ-example { border-color: var(--teal-light); }
+  .econ-card:nth-child(2) { border-top: 2px solid var(--gold); }
+  .econ-card:nth-child(2) .econ-example { border-color: var(--gold); }
+  .econ-card:nth-child(3) { border-top: 2px solid var(--rust); }
+  .econ-card:nth-child(3) .econ-example { border-color: var(--rust); }
+  .econ-card:nth-child(4) { border-top: 2px solid #7b68ee; }
+  .econ-card:nth-child(4) .econ-example { border-color: #7b68ee; }
+
+  /* ── EVENTS ── */
+  .events-section { background: #080810; }
+
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 64px;
+  }
+
+  .event-card {
+    background: rgba(14,14,22,0.9);
+    border: 1px solid rgba(244,240,232,0.07);
+    border-radius: 4px;
+    padding: 32px 28px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.35s;
+    cursor: default;
+  }
+
+  .event-card:hover {
+    border-color: rgba(244,240,232,0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+  }
+
+  .event-urgency {
+    position: absolute; top: 20px; right: 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .urgency-high { background: rgba(196,92,46,0.15); color: var(--rust); border: 1px solid rgba(196,92,46,0.25); }
+  .urgency-med { background: rgba(201,168,76,0.12); color: var(--gold); border: 1px solid rgba(201,168,76,0.2); }
+  .urgency-low { background: rgba(42,181,165,0.1); color: var(--teal-light); border: 1px solid rgba(42,181,165,0.2); }
+
+  .event-emoji { font-size: 36px; margin-bottom: 20px; display: block; }
+
+  .event-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .event-scenario {
+    font-size: 12px;
+    color: rgba(244,240,232,0.5);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .event-reward {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+
+  .reward-chip {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 3px;
+    background: rgba(244,240,232,0.05);
+    border: 1px solid rgba(244,240,232,0.1);
+    color: rgba(244,240,232,0.55);
+  }
+
+  /* ── MULTIPLAYER ── */
+  .multi-section {
+    background: linear-gradient(180deg, #080810 0%, #0a0a0f 100%);
+  }
+
+  .mission-board {
+    margin-top: 64px;
+    background: rgba(12,12,18,0.9);
+    border: 1px solid rgba(244,240,232,0.07);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .mission-header {
+    background: rgba(26,42,38,0.6);
+    padding: 20px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid rgba(42,181,165,0.12);
+  }
+
+  .mission-header h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .mission-header .live-badge {
+    display: flex; align-items: center; gap: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--teal-light);
+    letter-spacing: 0.1em;
+  }
+
+  .live-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--teal-light);
+    animation: pulse 1.5s ease infinite;
+  }
+
+  .mission-rows {
+    display: flex; flex-direction: column;
+  }
+
+  .mission-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 120px;
+    gap: 16px;
+    align-items: center;
+    padding: 20px 28px;
+    border-bottom: 1px solid rgba(244,240,232,0.04);
+    transition: background 0.2s;
+  }
+
+  .mission-row:hover { background: rgba(244,240,232,0.02); }
+
+  .mission-row:last-child { border-bottom: none; }
+
+  .mission-name { font-size: 14px; font-weight: 500; }
+  .mission-name-sub { font-size: 11px; color: rgba(244,240,232,0.35); margin-top: 2px; }
+
+  .mission-players {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: rgba(244,240,232,0.5);
+  }
+
+  .mission-skill {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 4px 8px;
+    border-radius: 3px;
+    background: rgba(42,181,165,0.08);
+    color: var(--teal-light);
+    border: 1px solid rgba(42,181,165,0.15);
+    text-align: center;
+  }
+
+  .mission-reward-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--gold);
+  }
+
+  .join-btn {
+    padding: 8px 20px;
+    background: transparent;
+    border: 1px solid rgba(42,181,165,0.3);
+    color: var(--teal-light);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .join-btn:hover {
+    background: rgba(42,181,165,0.12);
+    border-color: var(--teal-light);
+  }
+
+  /* ── CITIES ── */
+  .cities-section { background: var(--ink); }
+
+  .cities-strip {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2px;
+    margin-top: 64px;
+  }
+
+  .city-tile {
+    position: relative;
+    height: 240px;
+    overflow: hidden;
+    cursor: default;
+    transition: all 0.4s;
+  }
+
+  .city-tile-bg {
+    position: absolute; inset: 0;
+    display: flex; align-items: flex-end;
+    padding: 20px;
+    background: linear-gradient(180deg, transparent 0%, rgba(10,10,15,0.85) 100%);
+    transition: all 0.4s;
+  }
+
+  .city-tile-bg::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: inherit;
+    z-index: -1;
+  }
+
+  .city-tile:nth-child(1) { background: linear-gradient(145deg, #0d1f1b 0%, #122b26 100%); }
+  .city-tile:nth-child(2) { background: linear-gradient(145deg, #1a1020 0%, #1f102a 100%); }
+  .city-tile:nth-child(3) { background: linear-gradient(145deg, #1a1208 0%, #2a1e0a 100%); }
+  .city-tile:nth-child(4) { background: linear-gradient(145deg, #081018 0%, #0c1825 100%); }
+  .city-tile:nth-child(5) { background: linear-gradient(145deg, #180d10 0%, #251015 100%); }
+
+  .city-skyline { font-size: 40px; display: block; text-align: center; margin-bottom: 8px; filter: grayscale(0.3); }
+
+  .city-tile:hover { transform: scale(1.02); z-index: 2; }
+
+  .city-tile-info { position: relative; z-index: 1; }
+
+  .city-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .city-unlock {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: rgba(244,240,232,0.35);
+    letter-spacing: 0.05em;
+  }
+
+  .city-lock-overlay {
+    position: absolute; inset: 0;
+    background: rgba(10,10,15,0.65);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    backdrop-filter: blur(2px);
+  }
+
+  .city-lock-overlay.unlocked { display: none; }
+
+  /* ── TECH ARCH ── */
+  .arch-section { background: #070710; }
+
+  .arch-diagram {
+    margin-top: 64px;
+    background: rgba(10,10,18,0.9);
+    border: 1px solid rgba(244,240,232,0.07);
+    border-radius: 4px;
+    padding: 48px;
+  }
+
+  .arch-layers {
+    display: flex; flex-direction: column; gap: 16px;
+  }
+
+  .arch-layer {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 24px;
+    align-items: center;
+    padding: 20px 24px;
+    background: rgba(14,14,22,0.7);
+    border: 1px solid rgba(244,240,232,0.05);
+    border-radius: 4px;
+    transition: border-color 0.3s;
+    position: relative;
+  }
+
+  .arch-layer:hover { border-color: rgba(244,240,232,0.12); }
+
+  .arch-layer-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+
+  .arch-layer-items {
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+
+  .arch-item {
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 3px;
+    border: 1px solid rgba(244,240,232,0.1);
+    color: rgba(244,240,232,0.65);
+    background: rgba(244,240,232,0.03);
+  }
+
+  .arch-layer:nth-child(1) .arch-layer-name { color: var(--teal-light); }
+  .arch-layer:nth-child(1) .arch-item { border-color: rgba(42,181,165,0.15); }
+  .arch-layer:nth-child(2) .arch-layer-name { color: var(--gold); }
+  .arch-layer:nth-child(2) .arch-item { border-color: rgba(201,168,76,0.15); }
+  .arch-layer:nth-child(3) .arch-layer-name { color: var(--rust); }
+  .arch-layer:nth-child(3) .arch-item { border-color: rgba(196,92,46,0.15); }
+  .arch-layer:nth-child(4) .arch-layer-name { color: #7b68ee; }
+  .arch-layer:nth-child(4) .arch-item { border-color: rgba(123,104,238,0.15); }
+  .arch-layer:nth-child(5) .arch-layer-name { color: #60b8d4; }
+  .arch-layer:nth-child(5) .arch-item { border-color: rgba(96,184,212,0.15); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #050508;
+    border-top: 1px solid rgba(244,240,232,0.06);
+    padding: 60px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .footer-brand .logo { margin-bottom: 12px; }
+  .footer-brand p { font-size: 13px; color: rgba(244,240,232,0.35); line-height: 1.7; }
+
+  .footer-col-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(244,240,232,0.35);
+    margin-bottom: 16px;
+  }
+
+  .footer-links { display: flex; flex-direction: column; gap: 10px; }
+  .footer-links a {
+    font-size: 13px;
+    color: rgba(244,240,232,0.5);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--teal-light); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes floatBubble {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(0.95); }
+  }
+
+  @keyframes waveAnim {
+    from { height: 4px; }
+    to { height: var(--target-h, 28px); }
+  }
+
+  @keyframes msgSlide {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: rgba(244,240,232,0.03); }
+  ::-webkit-scrollbar-thumb { background: rgba(42,181,165,0.3); border-radius: 2px; }
+
+  /* ── DIVIDER ── */
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(42,181,165,0.2), rgba(201,168,76,0.2), transparent);
+    margin: 0 80px;
+  }
+
+  /* Responsive  */
+  @media (max-width: 1100px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    nav { padding: 20px 32px; }
+    section { padding: 80px 32px; }
+    .loop-diagram { grid-template-columns: repeat(3, 1fr); }
+    .chars-grid { grid-template-columns: 1fr 1fr; }
+    .progress-layout { grid-template-columns: 1fr; }
+    .economy-grid { grid-template-columns: 1fr 1fr; }
+    .events-grid { grid-template-columns: 1fr 1fr; }
+    .cities-strip { grid-template-columns: repeat(3, 1fr); }
+    footer { grid-template-columns: 1fr; gap: 40px; }
+    .mission-row { grid-template-columns: 1fr 1fr; }
+    .conv-layout { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Vox<span class="logo-dot">Life</span></div>
+  <ul class="nav-links">
+    <li><a href="#gameplay">Gameplay</a></li>
+    <li><a href="#characters">Characters</a></li>
+    <li><a href="#conversations">Conversations</a></li>
+    <li><a href="#progression">Progression</a></li>
+    <li><a href="#multiplayer">Multiplayer</a></li>
+    <li><a href="#architecture">Architecture</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding:0;">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-left" style="padding-top:120px;">
+    <p class="hero-tag">Full System Design Document · AI-Powered Language Game</p>
+    <h1 class="hero-title">
+      Speak Your<br><span>World Into</span><br>Existence
+    </h1>
+    <p class="hero-sub">The first life simulation where your voice is your currency.</p>
+    <p class="hero-desc">
+      VoxLife is an AI-powered English speaking game where every conversation shapes your virtual career, relationships, and financial reality. Powered by emotionally-aware AI characters with persistent memory, real-world event scenarios, and a consequence engine that turns words into outcomes.
+    </p>
+    <div class="hero-cta">
+      <a class="btn-primary" href="#gameplay">Explore System Design ↓</a>
+      <a class="btn-outline" href="#conversations">See Conversation Flow</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="city-scene">
+      <svg class="city-svg" viewBox="0 0 480 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Sky gradient -->
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0d1a18"/>
+            <stop offset="100%" stop-color="#0a0a0f"/>
+          </linearGradient>
+          <linearGradient id="glow1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1a7a6e" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#1a7a6e" stop-opacity="0.1"/>
+          </linearGradient>
+          <linearGradient id="glow2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#c9a84c" stop-opacity="0.5"/>
+            <stop offset="100%" stop-color="#c9a84c" stop-opacity="0.05"/>
+          </linearGradient>
+        </defs>
+        <rect width="480" height="320" fill="url(#sky)"/>
+
+        <!-- Moon/Sun glow -->
+        <circle cx="340" cy="60" r="30" fill="rgba(201,168,76,0.08)"/>
+        <circle cx="340" cy="60" r="18" fill="rgba(201,168,76,0.15)"/>
+        <circle cx="340" cy="60" r="10" fill="rgba(201,168,76,0.3)"/>
+
+        <!-- Stars -->
+        <circle cx="40" cy="30" r="1.5" fill="rgba(244,240,232,0.6)"/>
+        <circle cx="120" cy="15" r="1" fill="rgba(244,240,232,0.4)"/>
+        <circle cx="200" cy="40" r="1.5" fill="rgba(244,240,232,0.5)"/>
+        <circle cx="280" cy="20" r="1" fill="rgba(244,240,232,0.4)"/>
+        <circle cx="420" cy="35" r="1.5" fill="rgba(244,240,232,0.5)"/>
+        <circle cx="60" cy="70" r="1" fill="rgba(244,240,232,0.3)"/>
+        <circle cx="460" cy="80" r="1" fill="rgba(244,240,232,0.3)"/>
+
+        <!-- Buildings back -->
+        <rect x="0" y="160" width="60" height="160" fill="#0d1a18"/>
+        <rect x="10" y="140" width="40" height="180" fill="#0e1c1a"/>
+        <!-- windows -->
+        <rect x="16" y="148" width="8" height="6" fill="rgba(42,181,165,0.4)" rx="1"/>
+        <rect x="28" y="148" width="8" height="6" fill="rgba(201,168,76,0.3)" rx="1"/>
+        <rect x="16" y="162" width="8" height="6" fill="rgba(42,181,165,0.2)" rx="1"/>
+        <rect x="28" y="162" width="8" height="6" fill="rgba(42,181,165,0.4)" rx="1"/>
+        <rect x="16" y="176" width="8" height="6" fill="rgba(201,168,76,0.3)" rx="1"/>
+        <rect x="28" y="176" width="8" height="6" fill="rgba(42,181,165,0.2)" rx="1"/>
+
+        <!-- Main tower -->
+        <rect x="80" y="80" width="80" height="240" fill="#0f1f1b"/>
+        <rect x="95" y="60" width="50" height="260" fill="#112320"/>
+        <!-- antenna -->
+        <rect x="118" y="20" width="4" height="42" fill="#1a3530"/>
+        <circle cx="120" cy="20" r="4" fill="rgba(196,92,46,0.8)"/>
+        <!-- windows -->
+        <rect x="100" y="70" width="10" height="8" fill="rgba(42,181,165,0.5)" rx="1"/>
+        <rect x="118" y="70" width="10" height="8" fill="rgba(201,168,76,0.4)" rx="1"/>
+        <rect x="136" y="70" width="10" height="8" fill="rgba(42,181,165,0.3)" rx="1"/>
+        <rect x="100" y="86" width="10" height="8" fill="rgba(244,240,232,0.2)" rx="1"/>
+        <rect x="118" y="86" width="10" height="8" fill="rgba(42,181,165,0.5)" rx="1"/>
+        <rect x="136" y="86" width="10" height="8" fill="rgba(201,168,76,0.3)" rx="1"/>
+        <rect x="100" y="102" width="10" height="8" fill="rgba(42,181,165,0.4)" rx="1"/>
+        <rect x="118" y="102" width="10" height="8" fill="rgba(244,240,232,0.1)" rx="1"/>
+        <rect x="136" y="102" width="10" height="8" fill="rgba(42,181,165,0.5)" rx="1"/>
+
+        <!-- Mid buildings -->
+        <rect x="170" y="120" width="70" height="200" fill="#111820"/>
+        <!-- windows -->
+        <rect x="178" y="130" width="10" height="8" fill="rgba(96,184,212,0.3)" rx="1"/>
+        <rect x="194" y="130" width="10" height="8" fill="rgba(201,168,76,0.25)" rx="1"/>
+        <rect x="210" y="130" width="10" height="8" fill="rgba(96,184,212,0.2)" rx="1"/>
+        <rect x="178" y="146" width="10" height="8" fill="rgba(201,168,76,0.3)" rx="1"/>
+        <rect x="194" y="146" width="10" height="8" fill="rgba(96,184,212,0.4)" rx="1"/>
+        <rect x="210" y="146" width="10" height="8" fill="rgba(201,168,76,0.2)" rx="1"/>
+        <rect x="178" y="162" width="10" height="8" fill="rgba(96,184,212,0.2)" rx="1"/>
+        <rect x="194" y="162" width="10" height="8" fill="rgba(244,240,232,0.1)" rx="1"/>
+        <rect x="210" y="162" width="10" height="8" fill="rgba(96,184,212,0.3)" rx="1"/>
+
+        <!-- Right cluster -->
+        <rect x="260" y="100" width="90" height="220" fill="#141020"/>
+        <rect x="275" y="80" width="60" height="240" fill="#160f22"/>
+        <rect x="270" y="60" width="20" height="260" fill="#130e1e"/>
+        <!-- windows -->
+        <rect x="283" y="88" width="10" height="8" fill="rgba(123,104,238,0.4)" rx="1"/>
+        <rect x="299" y="88" width="10" height="8" fill="rgba(201,168,76,0.3)" rx="1"/>
+        <rect x="315" y="88" width="10" height="8" fill="rgba(123,104,238,0.3)" rx="1"/>
+        <rect x="283" y="104" width="10" height="8" fill="rgba(201,168,76,0.25)" rx="1"/>
+        <rect x="299" y="104" width="10" height="8" fill="rgba(123,104,238,0.5)" rx="1"/>
+        <rect x="315" y="104" width="10" height="8" fill="rgba(244,240,232,0.12)" rx="1"/>
+        <rect x="283" y="120" width="10" height="8" fill="rgba(123,104,238,0.3)" rx="1"/>
+        <rect x="299" y="120" width="10" height="8" fill="rgba(201,168,76,0.35)" rx="1"/>
+        <rect x="315" y="120" width="10" height="8" fill="rgba(123,104,238,0.4)" rx="1"/>
+
+        <!-- Far right -->
+        <rect x="380" y="140" width="100" height="180" fill="#0f0f1a"/>
+        <rect x="400" y="120" width="60" height="200" fill="#101018"/>
+        <!-- windows -->
+        <rect x="408" y="128" width="10" height="8" fill="rgba(42,181,165,0.35)" rx="1"/>
+        <rect x="426" y="128" width="10" height="8" fill="rgba(201,168,76,0.25)" rx="1"/>
+        <rect x="444" y="128" width="10" height="8" fill="rgba(42,181,165,0.2)" rx="1"/>
+        <rect x="408" y="144" width="10" height="8" fill="rgba(244,240,232,0.1)" rx="1"/>
+        <rect x="426" y="144" width="10" height="8" fill="rgba(42,181,165,0.4)" rx="1"/>
+        <rect x="444" y="144" width="10" height="8" fill="rgba(201,168,76,0.3)" rx="1"/>
+
+        <!-- Ground / road -->
+        <rect x="0" y="280" width="480" height="40" fill="#080a08"/>
+        <rect x="0" y="280" width="480" height="2" fill="rgba(42,181,165,0.2)"/>
+        <!-- Road lines -->
+        <rect x="60" y="290" width="40" height="2" fill="rgba(201,168,76,0.15)"/>
+        <rect x="140" y="290" width="40" height="2" fill="rgba(201,168,76,0.15)"/>
+        <rect x="220" y="290" width="40" height="2" fill="rgba(201,168,76,0.15)"/>
+        <rect x="300" y="290" width="40" height="2" fill="rgba(201,168,76,0.15)"/>
+        <rect x="380" y="290" width="40" height="2" fill="rgba(201,168,76,0.15)"/>
+
+        <!-- Reflection on ground -->
+        <rect x="0" y="282" width="480" height="38" fill="url(#glow1)" opacity="0.15"/>
+      </svg>
+
+      <div class="char-bubble b1">
+        <div>"I'm very interested in the senior role — my background in..."</div>
+        <div class="tone-bar">
+          <span class="tone-pill tone-confident">Confident</span>
+          <span class="tone-pill tone-warm">Warm</span>
+        </div>
+      </div>
+
+      <div class="char-bubble b2">
+        <div>Sarah Chen reacts with approval. +12 Rep points earned.</div>
+        <div class="tone-bar">
+          <span class="tone-pill tone-confident">+$2,400 salary</span>
+        </div>
+      </div>
+
+      <div class="char-bubble b3">
+        <div>"Um... I was thinking maybe... if possible..."</div>
+        <div class="tone-bar">
+          <span class="tone-pill tone-nervous">Nervous detected</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── GAMEPLAY LOOP ── -->
+<section class="gameplay-section" id="gameplay">
+  <div class="section-tag">Core Mechanics</div>
+  <h2 class="section-title">The Core Gameplay Loop</h2>
+  <p class="section-body">Every session in VoxLife follows a consequence-driven conversation cycle. Your voice triggers real simulated outcomes — not points, but promotions, relationships, and opportunities.</p>
+
+  <div class="loop-diagram">
+    <div class="loop-node">
+      <div class="loop-icon">🎙️</div>
+      <div class="loop-label">Speak</div>
+      <div class="loop-desc">Player initiates or responds to real-world scenario using voice</div>
+    </div>
+    <div class="loop-node">
+      <div class="loop-icon">🧠</div>
+      <div class="loop-label">AI Analyzes</div>
+      <div class="loop-desc">Tone, clarity, confidence, vocabulary, fluency scored in real-time</div>
+    </div>
+    <div class="loop-node">
+      <div class="loop-icon">⚡</div>
+      <div class="loop-label">Consequence</div>
+      <div class="loop-desc">Job offer, friendship, salary change, or missed opportunity fires</div>
+    </div>
+    <div class="loop-node">
+      <div class="loop-icon">🗺️</div>
+      <div class="loop-label">World Shifts</div>
+      <div class="loop-desc">NPC memory updates, city access changes, new events unlock</div>
+    </div>
+    <div class="loop-node">
+      <div class="loop-icon">📈</div>
+      <div class="loop-label">Growth</div>
+      <div class="loop-desc">Reputation, confidence, and communication-impact scores evolve</div>
+    </div>
+  </div>
+
+  <div style="margin-top:48px; display:grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+    <div style="background:rgba(14,14,22,0.8); border:1px solid rgba(244,240,232,0.07); padding:32px;">
+      <div class="section-tag">Daily Session Design</div>
+      <p style="font-size:13px; color:rgba(244,240,232,0.6); line-height:1.8;">
+        Each session (15–30 min) begins with a <strong style="color:var(--paper)">Morning Brief</strong> — the world presents 3 pending events: a meeting, a social invitation, and an emergency. Players choose their order, and each interaction is fully voice-driven with no text fallback. The session ends with a <strong style="color:var(--paper)">Day Review</strong> screen showing how every spoken word translated into real outcomes: salary delta, relationship health, and reputation shift visualized as a timeline of consequence.
+      </p>
+    </div>
+    <div style="background:rgba(14,14,22,0.8); border:1px solid rgba(244,240,232,0.07); padding:32px;">
+      <div class="section-tag">Voice Evaluation Engine</div>
+      <p style="font-size:13px; color:rgba(244,240,232,0.6); line-height:1.8;">
+        The AI evaluates five dimensions simultaneously: <strong style="color:var(--teal-light)">Tone</strong> (warmth, assertiveness, anxiety), <strong style="color:var(--gold)">Clarity</strong> (sentence structure, filler words), <strong style="color:var(--paper)">Confidence</strong> (pace, volume, hesitation patterns), <strong style="color:var(--rust)">Vocabulary</strong> (breadth, appropriateness to context), and <strong style="color:#7b68ee">Relevance</strong> (did you actually answer the question?). Characters react to all five simultaneously, creating emergent, realistic social dynamics.
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── CHARACTERS ── -->
+<section class="chars-section" id="characters">
+  <div class="section-tag">AI Character System</div>
+  <h2 class="section-title">Emotionally Responsive<br>AI Characters</h2>
+  <p class="section-body">Each character has a unique personality matrix, persistent memory, and emotionally reactive behavior. They don't just hear your words — they respond to how you say them.</p>
+
+  <div class="chars-grid">
+    <div class="char-card recruiter">
+      <div class="char-avatar">👩‍💼</div>
+      <div class="char-name">Sarah Chen</div>
+      <div class="char-role">Senior Recruiter · Apex Corp</div>
+      <ul class="char-trait-list">
+        <li class="char-trait">Reacts strongly to confident tone — speaks faster, leans in (simulated via more formal language and shorter response gaps)</li>
+        <li class="char-trait">Remembers every interview attempt: references past mistakes or growth specifically</li>
+        <li class="char-trait">Loses interest if you repeat filler words ("um", "like") more than 4 times per conversation</li>
+        <li class="char-trait">Unlocks internal referral network after trust score exceeds 75 over 3 sessions</li>
+      </ul>
+      <span class="memory-badge">🧠 Persistent memory: 90-day window</span>
+    </div>
+
+    <div class="char-card mentor">
+      <div class="char-avatar">👨‍🏫</div>
+      <div class="char-name">Marcus Webb</div>
+      <div class="char-role">Executive Coach · Independent</div>
+      <ul class="char-trait-list">
+        <li class="char-trait">Reacts to emotional warmth — if you show vulnerability, he opens up and shares strategic career secrets</li>
+        <li class="char-trait">Tracks your vocabulary growth across sessions, praises improvement specifically</li>
+        <li class="char-trait">Grows frustrated if you ignore his advice in subsequent events — references it directly</li>
+        <li class="char-trait">Unlocks "Executive Briefing" missions only after you've demonstrated 5-session consistency</li>
+      </ul>
+      <span class="memory-badge">🧠 Persistent memory: Full lifetime</span>
+    </div>
+
+    <div class="char-card rival">
+      <div class="char-avatar">🧑‍💻</div>
+      <div class="char-name">Priya Nair</div>
+      <div class="char-role">Direct Competitor · Rising Star</div>
+      <ul class="char-trait-list">
+        <li class="char-trait">Becomes more aggressive if your reputation score exceeds hers — challenges you in public networking events</li>
+        <li class="char-trait">Can become an ally if you compliment her work twice and demonstrate collaborative language patterns</li>
+        <li class="char-trait">Remembers whether you backed her up or undermined her in group settings</li>
+        <li class="char-trait">Her relationship status directly impacts your access to certain city-level opportunities</li>
+      </ul>
+      <span class="memory-badge">🧠 Persistent memory: Relationship-based</span>
+    </div>
+  </div>
+
+  <div style="margin-top:32px; background:rgba(14,14,22,0.7); border:1px solid rgba(244,240,232,0.06); padding:32px; border-left: 3px solid var(--teal-light);">
+    <div class="section-tag">Character Memory Architecture</div>
+    <p style="font-size:13px; color:rgba(244,240,232,0.6); line-height:1.8; max-width:800px;">
+      Every character maintains a <strong style="color:var(--paper)">Vector Memory Store</strong> — a compressed semantic representation of all past interactions. Characters don't memorize exact words but remember emotional trajectories, trust arc, and recurring patterns. For example, if a player historically hesitates before answering salary questions, the AI recruiter will probe on compensation topics specifically. Memory decays realistically: casual contacts forget faster than close mentors. Relationship graphs update after every session, and the world simulation reflects who remembers you and how.
+    </p>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── CONVERSATIONS ── -->
+<section class="conv-section" id="conversations">
+  <div class="section-tag">Sample Real-Time Flows</div>
+  <h2 class="section-title">Dynamic Conversation<br>Scenarios</h2>
+  <p class="section-body">These are live-rendered examples of how VoxLife conversations actually flow — with AI reaction tags, tone analysis, and real consequences visible to the player.</p>
+
+  <div class="conv-layout">
+    <div class="scenario-list">
+      <button class="scenario-btn active" onclick="switchScenario(0, this)">
+        <div class="scenario-btn-title">Job Interview</div>
+        <div class="scenario-btn-meta">High stakes · Career path</div>
+      </button>
+      <button class="scenario-btn" onclick="switchScenario(1, this)">
+        <div class="scenario-btn-title">Salary Negotiation</div>
+        <div class="scenario-btn-meta">Medium stakes · Financial</div>
+      </button>
+      <button class="scenario-btn" onclick="switchScenario(2, this)">
+        <div class="scenario-btn-title">Emergency Meeting</div>
+        <div class="scenario-btn-meta">High urgency · Leadership</div>
+      </button>
+      <button class="scenario-btn" onclick="switchScenario(3, this)">
+        <div class="scenario-btn-title">Networking Event</div>
+        <div class="scenario-btn-meta">Social · Relationship building</div>
+      </button>
+      <button class="scenario-btn" onclick="switchScenario(4, this)">
+        <div class="scenario-btn-title">Mentor Check-In</div>
+        <div class="scenario-btn-meta">Low pressure · Growth</div>
+      </button>
+      <button class="scenario-btn" onclick="switchScenario(5, this)">
+        <div class="scenario-btn-title">Client Presentation</div>
+        <div class="scenario-btn-meta">Public speaking · Revenue</div>
+      </button>
+    </div>
+
+    <div class="conv-screen">
+      <div class="conv-header">
+        <div class="conv-header-info">
+          <div class="conv-avatar" id="conv-avatar">👩‍💼</div>
+          <div>
+            <div class="conv-char-name" id="conv-char">Sarah Chen</div>
+            <div class="conv-char-status" id="conv-status">Senior Recruiter · Analyzing tone…</div>
+          </div>
+        </div>
+        <div class="conv-stakes">
+          <span class="stake-badge" id="stake1">+$45K salary</span>
+          <span class="stake-badge" id="stake2">Career unlock</span>
+        </div>
+      </div>
+
+      <div class="conv-messages" id="conv-messages">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="consequence-banner" id="consequence-banner" style="display:none;">
+        <span class="c-icon">⚡</span>
+        <div id="consequence-text"></div>
+      </div>
+
+      <div class="conv-input-area">
+        <button class="mic-btn" id="mic-btn" onclick="toggleMic()">🎙️</button>
+        <div class="waveform" id="waveform">
+          <!-- Bars populated by JS -->
+        </div>
+        <div class="hint-text" id="hint-text">Press mic to speak your response</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── PROGRESSION ── -->
+<section class="progress-section" id="progression">
+  <div class="section-tag">Progression Economy</div>
+  <h2 class="section-title">Reputation, Not Levels</h2>
+  <p class="section-body">Traditional XP bars are replaced with three dynamic reputation axes that reflect real professional growth. Every conversation shifts multiple meters simultaneously.</p>
+
+  <div class="progress-layout">
+    <div class="rep-meter">
+      <div class="rep-title">// Communication Profile — Alex Rivera</div>
+
+      <div class="rep-stat">
+        <div class="rep-stat-header">
+          <span class="rep-stat-name">Professional Reputation</span>
+          <span class="rep-stat-val">78 / 100</span>
+        </div>
+        <div class="rep-bar-track"><div class="rep-bar-fill fill-rep"></div></div>
+      </div>
+
+      <div class="rep-stat">
+        <div class="rep-stat-header">
+          <span class="rep-stat-name">Speaking Confidence</span>
+          <span class="rep-stat-val">64 / 100</span>
+        </div>
+        <div class="rep-bar-track"><div class="rep-bar-fill fill-conf"></div></div>
+      </div>
+
+      <div class="rep-stat">
+        <div class="rep-stat-header">
+          <span class="rep-stat-name">Communication Impact</span>
+          <span class="rep-stat-val">52 / 100</span>
+        </div>
+        <div class="rep-bar-track"><div class="rep-bar-fill fill-impact"></div></div>
+      </div>
+
+      <div class="rep-stat">
+        <div class="rep-stat-header">
+          <span class="rep-stat-name">Vocabulary Range</span>
+          <span class="rep-stat-val">71 / 100</span>
+        </div>
+        <div class="rep-bar-track"><div class="rep-bar-fill fill-vocab"></div></div>
+      </div>
+
+      <div class="rep-stat">
+        <div class="rep-stat-header">
+          <span class="rep-stat-name">Natural Fluency</span>
+          <span class="rep-stat-val">85 / 100</span>
+        </div>
+        <div class="rep-bar-track"><div class="rep-bar-fill fill-fluency"></div></div>
+      </div>
+
+      <div style="margin-top:28px; padding-top:28px; border-top:1px solid rgba(244,240,232,0.07);">
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <span style="font-size:13px; color:rgba(244,240,232,0.5);">Virtual Net Worth</span>
+          <span style="font-family:'DM Mono',monospace; font-size:15px; color:var(--gold);">$124,500</span>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <span style="font-size:13px; color:rgba(244,240,232,0.5);">Current Title</span>
+          <span style="font-size:13px; font-weight:600; color:var(--paper);">Marketing Manager</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(244,240,232,0.35); margin-bottom:28px;">Career Trajectory</div>
+      <div class="career-track">
+        <div class="career-node done">
+          <div class="career-node-title">Unemployed Graduate</div>
+          <div class="career-node-desc">Started with zero rep, no contacts. First conversation at the local coffee shop unlocked the job board.</div>
+          <span class="career-node-badge badge-done">✓ Completed</span>
+        </div>
+        <div class="career-node done">
+          <div class="career-node-title">Junior Copywriter</div>
+          <div class="career-node-desc">Landed through a confident cold pitch email conversation. First paycheck: $2,200/month.</div>
+          <span class="career-node-badge badge-done">✓ Completed · 3 months</span>
+        </div>
+        <div class="career-node done">
+          <div class="career-node-title">Marketing Coordinator</div>
+          <div class="career-node-desc">Earned promotion by successfully presenting campaign results to team. Fluency score hit 70+.</div>
+          <span class="career-node-badge badge-done">✓ Completed · 5 months</span>
+        </div>
+        <div class="career-node current">
+          <div class="career-node-title">Marketing Manager ← You Are Here</div>
+          <div class="career-node-desc">Managing team of 4. Need to lead a departmental crisis meeting to unlock Director path.</div>
+          <span class="career-node-badge badge-active">⬡ Active · Building reputation</span>
+        </div>
+        <div class="career-node locked">
+          <div class="career-node-title">Director of Communications</div>
+          <div class="career-node-desc">Requires: Confidence ≥ 80, 3 successful public presentations, Priya Nair relationship resolved.</div>
+          <span class="career-node-badge badge-locked">🔒 Locked</span>
+        </div>
+        <div class="career-node locked">
+          <div class="career-node-title">VP of Strategy</div>
+          <div class="career-node-desc">Requires: City unlock — New York. International client negotiation completed.</div>
+          <span class="career-node-badge badge-locked">🔒 Locked</span>
+        </div>
+        <div class="career-node locked">
+          <div class="career-node-title">Global CEO</div>
+          <div class="career-node-desc">Final tier. Requires: All cities, Rep ≥ 95, Multiplayer board meeting completed.</div>
+          <span class="career-node-badge badge-locked">🔒 Locked</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── ECONOMY ── -->
+<section class="economy-section">
+  <div class="section-tag">Consequence Engine</div>
+  <h2 class="section-title">Words Have Real Value</h2>
+  <p class="section-body">Every conversation outcome is mapped to a consequence category. These are not abstract rewards — they directly alter your simulated world state.</p>
+
+  <div class="economy-grid">
+    <div class="econ-card">
+      <span class="econ-icon">💰</span>
+      <div class="econ-name">Financial Consequences</div>
+      <div class="econ-title">Money Moves</div>
+      <div class="econ-desc">Salary negotiations, client contract wins, investment pitches, and freelance deals directly alter your virtual bank balance. A confident negotiation can add $8,000 to your annual salary. A weak pitch loses the contract.</div>
+      <div class="econ-example">"A well-structured counter-offer just earned you +$6,500 in base salary. Total: $87,500/yr."</div>
+    </div>
+    <div class="econ-card">
+      <span class="econ-icon">🤝</span>
+      <div class="econ-name">Social Capital</div>
+      <div class="econ-title">Relationships Built</div>
+      <div class="econ-desc">Trust scores with key characters unlock mentorship access, referrals, inside information, and collaboration invitations. A single authentic conversation with Marcus can open doors unavailable for months.</div>
+      <div class="econ-example">"Marcus Webb added you to his private recommendation list. 3 new job boards unlocked."</div>
+    </div>
+    <div class="econ-card">
+      <span class="econ-icon">🚀</span>
+      <div class="econ-name">Career Events</div>
+      <div class="econ-title">Opportunities Unlocked</div>
+      <div class="econ-desc">Promotions, speaking invitations, board seats, and global assignments appear based on your reputation profile. Miss the window by performing poorly, and the opportunity expires — forcing a different career path.</div>
+      <div class="econ-example">"You missed the Tokyo assignment window. A new path via Singapore opens in 14 days."</div>
+    </div>
+    <div class="econ-card">
+      <span class="econ-icon">🌍</span>
+      <div class="econ-name">World Access</div>
+      <div class="econ-title">Cities Unlocked</div>
+      <div class="econ-desc">Each city (Mumbai → London → New York → Tokyo → Dubai) unlocks new character ecosystems, industries, and salary tiers. Access requires meeting the city's entry reputation threshold through conversation performance.</div>
+      <div class="econ-example">"London network access unlocked. 12 new characters and 4 industry sectors available."</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── EVENTS ── -->
+<section class="events-section">
+  <div class="section-tag">Dynamic Event System</div>
+  <h2 class="section-title">Real-World Style Events<br>Require Spontaneous Speaking</h2>
+  <p class="section-body">Events arrive without warning during sessions. You have a limited time window to engage. No scripts. No preparation. Just your voice.</p>
+
+  <div class="events-grid">
+    <div class="event-card">
+      <span class="event-urgency urgency-high">⚡ High Urgency</span>
+      <span class="event-emoji">🔥</span>
+      <div class="event-title">Crisis Board Meeting</div>
+      <div class="event-scenario">A product launch just failed publicly. You have 2 minutes to explain the situation to five board members and propose a recovery plan. Each board member reacts based on their unique personality model. One is aggressive. One is sympathetic. Two are silent observers who remember everything.</div>
+      <div class="event-reward">
+        <span class="reward-chip">+Reputation if confident</span>
+        <span class="reward-chip">Leadership trait unlocks</span>
+        <span class="reward-chip">Potential demotion if failed</span>
+      </div>
+    </div>
+
+    <div class="event-card">
+      <span class="event-urgency urgency-med">◆ Medium Stakes</span>
+      <span class="event-emoji">🎤</span>
+      <div class="event-title">Surprise Keynote Slot</div>
+      <div class="event-scenario">The scheduled speaker dropped out. You're asked to fill a 3-minute keynote slot at the industry conference with 200 attendees. The topic is your company's vision. You must speak in complete, organized English. Filler words are detected and penalized. Applause meter is visible.</div>
+      <div class="event-reward">
+        <span class="reward-chip">+12 Reputation</span>
+        <span class="reward-chip">Media coverage event</span>
+        <span class="reward-chip">New character connections</span>
+      </div>
+    </div>
+
+    <div class="event-card">
+      <span class="event-urgency urgency-low">◇ Low Stakes</span>
+      <span class="event-emoji">☕</span>
+      <div class="event-title">Coffee Shop Encounter</div>
+      <div class="event-scenario">You recognize a person from the LinkedIn-style feed at a café — a potential contact with connections to your dream company. You have one chance to strike up a natural conversation. Too formal sounds stiff. Too casual loses credibility. The AI reads the social register of every sentence.</div>
+      <div class="event-reward">
+        <span class="reward-chip">New contact added</span>
+        <span class="reward-chip">+Confidence score</span>
+        <span class="reward-chip">Referral chain opens</span>
+      </div>
+    </div>
+
+    <div class="event-card">
+      <span class="event-urgency urgency-high">⚡ High Urgency</span>
+      <span class="event-emoji">📞</span>
+      <div class="event-title">Emergency Client Call</div>
+      <div class="event-scenario">An international client is threatening to cancel their $500K contract. You're patched in mid-call. You must de-escalate, reassure, and propose a concrete solution — all in structured English under pressure. The client has an accent. The situation is ambiguous. There is no right answer.</div>
+      <div class="event-reward">
+        <span class="reward-chip">Contract retained +$12K</span>
+        <span class="reward-chip">+Negotiation trait</span>
+        <span class="reward-chip">International market opens</span>
+      </div>
+    </div>
+
+    <div class="event-card">
+      <span class="event-urgency urgency-med">◆ Medium Stakes</span>
+      <span class="event-emoji">🤝</span>
+      <div class="event-title">Networking Dinner</div>
+      <div class="event-scenario">A 6-person dinner with industry leaders. You must contribute to three conversational threads simultaneously — introduce yourself, follow up on earlier points, and pivot gracefully when interrupted. Social grace and active listening signals are measured in your response patterns.</div>
+      <div class="event-reward">
+        <span class="reward-chip">3–5 new contacts</span>
+        <span class="reward-chip">Social capital +8</span>
+        <span class="reward-chip">Private club invite</span>
+      </div>
+    </div>
+
+    <div class="event-card">
+      <span class="event-urgency urgency-low">◇ Development</span>
+      <span class="event-emoji">🎯</span>
+      <div class="event-title">Performance Review</div>
+      <div class="event-scenario">Your annual review with your manager. You must articulate achievements, negotiate your raise using data, and set goals for the next quarter — all verbally. The AI manager has been observing your in-game performance and will reference your actual session history in the conversation.</div>
+      <div class="event-reward">
+        <span class="reward-chip">Salary adjustment</span>
+        <span class="reward-chip">Promotion consideration</span>
+        <span class="reward-chip">Skill pathway opens</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── MULTIPLAYER ── -->
+<section class="multi-section" id="multiplayer">
+  <div class="section-tag">Multiplayer Voice Missions</div>
+  <h2 class="section-title">Collaborate Through<br>Voice Alone</h2>
+  <p class="section-body">Multiplayer missions require 2–4 players to solve shared professional challenges using only voice. No text. No gestures. Just communication strategy, clarity, and coordination.</p>
+
+  <div class="mission-board">
+    <div class="mission-header">
+      <h3>Active Mission Board</h3>
+      <div class="live-badge"><span class="live-dot"></span> 847 players active now</div>
+    </div>
+    <div class="mission-rows">
+      <div class="mission-row" style="background:rgba(26,42,38,0.3);">
+        <div>
+          <div class="mission-name">Acquire the Rival Company</div>
+          <div class="mission-name-sub">4 players must negotiate a M&A deal — CEO, CFO, Legal, and PR roles assigned at random</div>
+        </div>
+        <div class="mission-players">3/4 joined</div>
+        <div class="mission-skill">Negotiation</div>
+        <div class="mission-reward-val">+$50K virtual</div>
+        <button class="join-btn">Join Now</button>
+      </div>
+      <div class="mission-row">
+        <div>
+          <div class="mission-name">Launch a Startup in 48 Hours</div>
+          <div class="mission-name-sub">2-player co-founders must pitch to 3 AI investors simultaneously. Both must contribute equally.</div>
+        </div>
+        <div class="mission-players">1/2 joined</div>
+        <div class="mission-skill">Pitching</div>
+        <div class="mission-reward-val">+City unlock</div>
+        <button class="join-btn">Join Now</button>
+      </div>
+      <div class="mission-row">
+        <div>
+          <div class="mission-name">Crisis PR Response</div>
+          <div class="mission-name-sub">3 players manage a scandal: one speaks to press, one briefs internal team, one handles social media</div>
+        </div>
+        <div class="mission-players">2/3 joined</div>
+        <div class="mission-skill">Crisis Comms</div>
+        <div class="mission-reward-val">+22 Reputation</div>
+        <button class="join-btn">Join Now</button>
+      </div>
+      <div class="mission-row">
+        <div>
+          <div class="mission-name">UN Climate Panel Discussion</div>
+          <div class="mission-name-sub">4 players from different cities represent nations and must build consensus on a policy proposal</div>
+        </div>
+        <div class="mission-players">4/4 joined</div>
+        <div class="mission-skill">Diplomacy</div>
+        <div class="mission-reward-val">+Global title</div>
+        <button class="join-btn" style="opacity:0.4; pointer-events:none;">Full</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── CITIES ── -->
+<section class="cities-section">
+  <div class="section-tag">World Map</div>
+  <h2 class="section-title">A Different Life Path<br>In Every City</h2>
+  <p class="section-body">Each city unlocks a new professional ecosystem with unique characters, industries, communication cultures, and salary tiers. Progress through voice — no two players reach the same city at the same time.</p>
+
+  <div class="cities-strip">
+    <div class="city-tile">
+      <div class="city-tile-bg">
+        <div class="city-tile-info">
+          <span class="city-skyline">🏙️</span>
+          <div class="city-name">Mumbai</div>
+          <div class="city-unlock">Starting city · Always unlocked</div>
+        </div>
+      </div>
+      <div class="city-lock-overlay unlocked"></div>
+    </div>
+    <div class="city-tile">
+      <div class="city-tile-bg">
+        <div class="city-tile-info">
+          <span class="city-skyline">🎡</span>
+          <div class="city-name">London</div>
+          <div class="city-unlock">Req: Reputation ≥ 60</div>
+        </div>
+      </div>
+      <div class="city-lock-overlay unlocked"></div>
+    </div>
+    <div class="city-tile">
+      <div class="city-tile-bg">
+        <div class="city-tile-info">
+          <span class="city-skyline">🗽</span>
+          <div class="city-name">New York</div>
+          <div class="city-unlock">Req: Confidence ≥ 75</div>
+        </div>
+      </div>
+      <div class="city-lock-overlay">🔒</div>
+    </div>
+    <div class="city-tile">
+      <div class="city-tile-bg">
+        <div class="city-tile-info">
+          <span class="city-skyline">🗼</span>
+          <div class="city-name">Tokyo</div>
+          <div class="city-unlock">Req: Multiplayer mission</div>
+        </div>
+      </div>
+      <div class="city-lock-overlay">🔒</div>
+    </div>
+    <div class="city-tile">
+      <div class="city-tile-bg">
+        <div class="city-tile-info">
+          <span class="city-skyline">🌆</span>
+          <div class="city-name">Dubai</div>
+          <div class="city-unlock">Req: All cities + Rep 90+</div>
+        </div>
+      </div>
+      <div class="city-lock-overlay">🔒</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── ARCHITECTURE ── -->
+<section class="arch-section" id="architecture">
+  <div class="section-tag">Technical Architecture</div>
+  <h2 class="section-title">AI Systems That Power<br>VoxLife</h2>
+  <p class="section-body">A multi-layered AI stack handles voice analysis, character behavior, world simulation, and consequence generation simultaneously in real-time.</p>
+
+  <div class="arch-diagram">
+    <div class="arch-layers">
+      <div class="arch-layer">
+        <div class="arch-layer-name">Voice Input Layer</div>
+        <div class="arch-layer-items">
+          <span class="arch-item">WebSpeech API / Whisper STT</span>
+          <span class="arch-item">Prosody Analysis (tone, pace, volume)</span>
+          <span class="arch-item">Filler Word Detector</span>
+          <span class="arch-item">Real-time Confidence Scoring</span>
+          <span class="arch-item">Accent Normalization</span>
+        </div>
+      </div>
+      <div class="arch-layer">
+        <div class="arch-layer-name">Language Understanding</div>
+        <div class="arch-layer-items">
+          <span class="arch-item">Claude / GPT-4 Semantic Engine</span>
+          <span class="arch-item">Intent Classification</span>
+          <span class="arch-item">Vocabulary Range Scorer</span>
+          <span class="arch-item">Relevance & Coherence Check</span>
+          <span class="arch-item">Grammar Impact Weighting</span>
+        </div>
+      </div>
+      <div class="arch-layer">
+        <div class="arch-layer-name">Character AI Layer</div>
+        <div class="arch-layer-items">
+          <span class="arch-item">Personality Matrix Engine</span>
+          <span class="arch-item">Vector Memory Store (Pinecone)</span>
+          <span class="arch-item">Emotional Reaction Model</span>
+          <span class="arch-item">Relationship Graph Database</span>
+          <span class="arch-item">Dynamic Dialogue Generator</span>
+        </div>
+      </div>
+      <div class="arch-layer">
+        <div class="arch-layer-name">Simulation Engine</div>
+        <div class="arch-layer-items">
+          <span class="arch-item">Consequence Mapping System</span>
+          <span class="arch-item">World State Manager</span>
+          <span class="arch-item">Event Scheduler & Trigger Logic</span>
+          <span class="arch-item">Career Progression Calculator</span>
+          <span class="arch-item">Economy Balance Engine</span>
+        </div>
+      </div>
+      <div class="arch-layer">
+        <div class="arch-layer-name">Multiplayer & Sync</div>
+        <div class="arch-layer-items">
+          <span class="arch-item">WebRTC Voice Mesh</span>
+          <span class="arch-item">Real-time Turn Management</span>
+          <span class="arch-item">Shared World State Sync</span>
+          <span class="arch-item">Role Assignment Engine</span>
+          <span class="arch-item">Cross-player Consequence Resolver</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <div class="logo">Vox<span class="logo-dot">Life</span></div>
+    <p>An AI-powered English speaking life simulation where every word you speak creates a real consequence in your virtual world. Designed for learners who want to speak their way to success.</p>
+  </div>
+  <div>
+    <div class="footer-col-title">System Modules</div>
+    <div class="footer-links">
+      <a href="#gameplay">Core Gameplay Loop</a>
+      <a href="#characters">AI Character System</a>
+      <a href="#conversations">Conversation Engine</a>
+      <a href="#progression">Progression Economy</a>
+      <a href="#multiplayer">Multiplayer Missions</a>
+      <a href="#architecture">Technical Architecture</a>
+    </div>
+  </div>
+  <div>
+    <div class="footer-col-title">Design Principles</div>
+    <div class="footer-links">
+      <a href="#">Voice-First Interface</a>
+      <a href="#">Beginner to Global Leader</a>
+      <a href="#">Every Path is Unique</a>
+      <a href="#">Consequences Are Real</a>
+      <a href="#">Characters Remember You</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── WAVEFORM ──
+  const waveform = document.getElementById('waveform');
+  for (let i = 0; i < 24; i++) {
+    const bar = document.createElement('div');
+    bar.className = 'wave-bar';
+    bar.style.setProperty('--dur', (0.4 + Math.random() * 0.5) + 's');
+    bar.style.setProperty('--target-h', (12 + Math.random() * 24) + 'px');
+    waveform.appendChild(bar);
+  }
+
+  let micActive = false;
+  let waveInterval;
+
+  function toggleMic() {
+    micActive = !micActive;
+    const btn = document.getElementById('mic-btn');
+    const hint = document.getElementById('hint-text');
+    const bars = document.querySelectorAll('.wave-bar');
+
+    if (micActive) {
+      btn.classList.add('recording');
+      btn.textContent = '⏹️';
+      hint.textContent = 'Listening... speak clearly and confidently';
+      bars.forEach(b => b.classList.add('active'));
+      waveInterval = setInterval(() => {
+        bars.forEach(b => {
+          b.style.setProperty('--target-h', (6 + Math.random() * 30) + 'px');
+        });
+      }, 200);
+    } else {
+      btn.classList.remove('recording');
+      btn.textContent = '🎙️';
+      hint.textContent = 'Press mic to speak your response';
+      bars.forEach(b => b.classList.remove('active'));
+      clearInterval(waveInterval);
+      bars.forEach(b => b.style.height = '8px');
+    }
+  }
+
+  // ── CONVERSATION SCENARIOS ──
+  const scenarios = [
+    {
+      char: 'Sarah Chen', avatar: '👩‍💼', status: 'Senior Recruiter · Analyzing tone…',
+      stake1: '+$45K salary', stake2: 'Career unlock',
+      messages: [
+        { role: 'ai', text: "Good morning! Thank you for coming in today. I've been following your profile — impressive trajectory. So, tell me: why do you think you're the right fit for this Director of Marketing role?", tone: null, reaction: null },
+        { role: 'player', text: "Thank you for the opportunity, Sarah. Over the past three years, I've led campaigns that generated over 40% growth in digital engagement and managed cross-functional teams of 8 people. I believe my combination of analytical thinking and creative strategy makes me a strong candidate for this role.", tone: 'tone-confident', toneLabel: 'Confident', reaction: 'Sarah leans forward — confidence detected. Trust score +6.' },
+        { role: 'ai', text: "That's compelling. But let me push back a little — how do you handle failure? Can you give me an example of a major campaign that didn't go as planned?", tone: null, reaction: null },
+      ],
+      consequence: '⚡ Strong first impression. Sarah added you to her <strong>priority shortlist</strong>. Interview round 2 unlocked.'
+    },
+    {
+      char: 'David Park', avatar: '👨‍💼', status: 'Your Manager · Listening carefully',
+      stake1: '+$12K raise', stake2: 'Promotion path',
+      messages: [
+        { role: 'ai', text: "Your performance this year has been solid. I'm open to discussing compensation. But I need to hear from you — what number are you thinking, and why do you deserve it?", tone: null, reaction: null },
+        { role: 'player', text: "Based on my research into industry benchmarks and the results I've delivered — specifically the 35% increase in client retention — I believe a compensation of $95,000 would be appropriate and fair.", tone: 'tone-confident', toneLabel: 'Assertive', reaction: 'David pauses — impressed by data-backed confidence. Negotiation power +8.' },
+        { role: 'ai', text: "I appreciate the specificity. HR has a ceiling of $88K for this level. But I can approve a $5K performance bonus and a title change. Would that work as a bridge?", tone: null, reaction: null },
+      ],
+      consequence: '💰 Counter-offer negotiated. <strong>+$5,200 annual bonus</strong> secured. Title: "Senior Manager" unlocked.'
+    },
+    {
+      char: 'Elena Vasquez', avatar: '👩‍🏫', status: 'CEO · Under pressure',
+      stake1: 'Leadership test', stake2: 'Team trust',
+      messages: [
+        { role: 'ai', text: "We have a critical situation. The server is down, clients are calling, and the press is asking questions. You're the most senior person here right now. What's our immediate course of action?", tone: null, reaction: null },
+        { role: 'player', text: "Okay, everyone listen up. First priority: technical team isolates the root cause — I need an ETA in 10 minutes. Second: communications team sends a holding statement to all clients — factual, no speculation. Third: someone brief me on the press inquiry before anyone speaks to them.", tone: 'tone-confident', toneLabel: 'Decisive', reaction: 'Team confidence surges. Leadership recognition score +12.' },
+        { role: 'ai', text: "Good. The tech team says 45 minutes. The press is asking if this was a security breach. How do we respond?", tone: null, reaction: null },
+      ],
+      consequence: '🚀 Crisis handled with authority. <strong>Leadership trait unlocked.</strong> Director of Operations path opened.'
+    },
+    {
+      char: 'James Okafor', avatar: '🧑‍💼', status: 'Industry Contact · First meeting',
+      stake1: 'New network', stake2: 'Referral chain',
+      messages: [
+        { role: 'ai', text: "Oh, you're in marketing? Interesting. I'm actually in VC — we fund mostly SaaS and AI companies right now. What kind of work do you do?", tone: null, reaction: null },
+        { role: 'player', text: "That's a great space to be in right now. I lead growth strategy at a mid-stage SaaS company — we help enterprise teams manage distributed workforces. Actually, we've been thinking about a Series B. The timing might be interesting to discuss.", tone: 'tone-warm', toneLabel: 'Warm & Strategic', reaction: 'James\' interest spikes. Connection quality: High. +15 social capital.' },
+        { role: 'ai', text: "Distributed workforce management? That's interesting — we're actually scouting in that space. Let's exchange cards. Would you be open to a more formal conversation next week?", tone: null, reaction: null },
+      ],
+      consequence: '🤝 High-value VC contact made. <strong>James Okafor added to network.</strong> Investment conversation unlocked.'
+    },
+    {
+      char: 'Marcus Webb', avatar: '👨‍🏫', status: 'Executive Coach · Warm',
+      stake1: 'Skill growth', stake2: 'Mentorship unlocks',
+      messages: [
+        { role: 'ai', text: "It's been three weeks since we last spoke. I noticed you got the Manager role — congratulations. But tell me honestly: how are you feeling about it? Not the title — the actual day-to-day.", tone: null, reaction: null },
+        { role: 'player', text: "Honestly Marcus, it's more difficult than I expected. I'm technically confident but I find the communication side — running meetings, navigating office politics, speaking in front of senior leadership — that's where I struggle.", tone: 'tone-warm', toneLabel: 'Authentic', reaction: 'Marcus responds with warmth. Vulnerability recognized. Trust score +10.' },
+        { role: 'ai', text: "That honesty is exactly what I needed to hear. Most managers fake confidence at this stage. What you just described? That's coachable. Let me share something that took me 15 years to learn…", tone: null, reaction: null },
+      ],
+      consequence: '📚 Mentor trust threshold crossed. <strong>Executive Communication course unlocked.</strong> Weekly coaching sessions available.'
+    },
+    {
+      char: 'Anya Krishnan', avatar: '👩‍🎯', status: 'Client Director · Evaluating',
+      stake1: '$200K contract', stake2: 'Global client',
+      messages: [
+        { role: 'ai', text: "We've reviewed your proposal. There are three concerns from our board: timeline, integration complexity, and — frankly — whether your team has the capacity. I'll give you five minutes to address all three.", tone: null, reaction: null },
+        { role: 'player', text: "I appreciate the directness. On timeline: we're committing to a 90-day delivery with two milestone gates. On integration: our team has completed five similar implementations — I can share case studies today. On capacity: we've already assigned a dedicated 4-person team to this account starting Monday.", tone: 'tone-confident', toneLabel: 'Structured', reaction: 'Anya takes notes. Board concerns addressed. Trust score +14.' },
+        { role: 'ai', text: "That's… actually very reassuring. I'll be honest — you're the first vendor who didn't stammer when I pushed on capacity. Let me take this back to the board. Expect a call by Friday.", tone: null, reaction: null },
+      ],
+      consequence: '💼 Client impressed. <strong>$200,000 contract moved to final review.</strong> Global account badge approaching.'
+    }
+  ];
+
+  function switchScenario(index, btn) {
+    document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const s = scenarios[index];
+    document.getElementById('conv-avatar').textContent = s.avatar;
+    document.getElementById('conv-char').textContent = s.char;
+    document.getElementById('conv-status').textContent = s.status;
+    document.getElementById('stake1').textContent = s.stake1;
+    document.getElementById('stake2').textContent = s.stake2;
+
+    const container = document.getElementById('conv-messages');
+    container.innerHTML = '';
+
+    const banner = document.getElementById('consequence-banner');
+    banner.style.display = 'none';
+
+    s.messages.forEach((msg, i) => {
+      setTimeout(() => {
+        const div = document.createElement('div');
+        div.className = 'msg msg-' + msg.role;
+
+        const avt = document.createElement('div');
+        avt.className = 'msg-avt';
+        avt.textContent = msg.role === 'ai' ? s.avatar : '🧑';
+
+        const bubble = document.createElement('div');
+        bubble.className = 'msg-bubble';
+        bubble.textContent = msg.text;
+
+        if (msg.tone || msg.reaction) {
+          const meta = document.createElement('div');
+          meta.className = 'msg-meta';
+          if (msg.tone) {
+            const chip = document.createElement('span');
+            chip.className = 'tone-chip ' + msg.tone;
+            chip.textContent = msg.toneLabel;
+            meta.appendChild(chip);
+          }
+          if (msg.reaction) {
+            const react = document.createElement('span');
+            react.className = 'ai-reaction';
+            react.textContent = msg.reaction;
+            meta.appendChild(react);
+          }
+          bubble.appendChild(meta);
+        }
+
+        div.appendChild(avt);
+        div.appendChild(bubble);
+        container.appendChild(div);
+        container.scrollTop = container.scrollHeight;
+      }, i * 400);
+    });
+
+    setTimeout(() => {
+      banner.style.display = 'flex';
+      document.getElementById('consequence-text').innerHTML = s.consequence;
+    }, s.messages.length * 400 + 200);
+  }
+
+  // Init first scenario
+  switchScenario(0, document.querySelector('.scenario-btn'));
+
+  // ── INTERSECTION OBSERVER for rep bars ──
+  const repBars = document.querySelectorAll('.rep-bar-fill');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.transition = 'width 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
+      }
+    });
+  }, { threshold: 0.1 });
+  repBars.forEach(bar => observer.observe(bar));
+</script>
+</body>
+</html>
